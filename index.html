@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>留学资金能撑多久</title>
+<meta name="description" content="30 秒算一算：手里的钱按现在的花法还能撑几个月、能不能撑到毕业。不用注册，输入的数字不会离开你的浏览器。">
+<meta property="og:title" content="留学资金能撑多久 · 30 秒算一算">
+<meta property="og:description" content="填几个数，算出还能撑几个月、能不能撑到毕业。不用注册，不上传。">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1f2329;--sub:#646a73;--mute:#8f959e;--line:#e8eaed;--in:#1a9c5b;--out:#d83931;--warn:#b7791f;--warnbg:#fff7e6;--accent:#3370ff;--accentbg:#eef3ff;--chip:#f2f3f5}
+@media (prefers-color-scheme:dark){:root{--bg:#141517;--card:#1e1f22;--ink:#e8e9eb;--sub:#a6a9ae;--mute:#7c8087;--line:#2c2e33;--in:#3ec27f;--out:#f0605a;--warn:#f5b041;--warnbg:#3a2f17;--accent:#6e95ff;--accentbg:#1d2740;--chip:#2a2c30}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 56px}
+h1{font-size:24px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:13px}
+.card{background:var(--card);border-radius:14px;padding:18px 20px;border:1px solid var(--line);margin-top:14px}
+h2{font-size:15px;margin:0 0 10px;color:var(--sub);font-weight:600}
+.f{display:grid;grid-template-columns:1fr 150px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)}
+.f:last-child{border-bottom:0}
+.f label{font-size:14px}.f label small{display:block;color:var(--mute);font-size:12px}
+input,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums;text-align:right}
+select{text-align:left}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.cur{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.cur button{border:1px solid var(--line);background:var(--card);color:var(--sub);padding:5px 12px;border-radius:16px;cursor:pointer;font:inherit;font-size:13px}
+.cur button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.result{position:sticky;top:8px;z-index:2;background:var(--accentbg);border-color:transparent}
+.big{font-size:clamp(30px,8vw,42px);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.big small{font-size:16px;font-weight:600;color:var(--sub);margin-left:4px}
+.line{margin-top:6px;font-size:14px}
+.in{color:var(--in)}.out{color:var(--out)}.mute{color:var(--mute)}
+.alert{background:var(--warnbg);border-radius:10px;padding:10px 12px;font-size:13px;margin-top:10px}
+.tips{margin:8px 0 0;padding-left:18px;font-size:14px}.tips li{margin:3px 0}
+.formula{font-size:12px;color:var(--mute);margin-top:10px}
+.cta{display:block;text-align:center;background:var(--accent);color:#fff;text-decoration:none;padding:12px;border-radius:11px;font-weight:600;margin-top:12px}
+.foot{font-size:12px;color:var(--mute);margin-top:22px;line-height:1.7}
+.foot a{color:var(--sub)}
+.reset{background:none;border:0;color:var(--mute);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+@media (max-width:480px){.f{grid-template-columns:1fr 128px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>留学资金能撑多久</h1>
+  <div class="sub">填几个数，30 秒算出按现在的花法还能撑几个月。不用注册，你输入的数字不会离开这台设备。</div>
+
+  <div class="card result" aria-live="polite">
+    <div class="sub" id="rLabel">按现在的花法，还能撑</div>
+    <div class="big" id="rMonths">—</div>
+    <div class="line" id="rUntil"></div>
+    <div class="line" id="rGoal"></div>
+    <div id="rAlert"></div>
+  </div>
+
+  <div class="card">
+    <h2>① 手里的钱</h2>
+    <div class="f"><label for="assets">现在一共有多少<small>所有账户、现金、家里随时能转来的都算上</small></label><input id="assets" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="reserve">保底，不打算动<small>应急钱、回国机票之类</small></label><input id="reserve" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="upcoming">还没付的大额<small>剩下的学费、要一次付清的房租、签证押金等</small></label><input id="upcoming" inputmode="decimal" placeholder="0"></div>
+    <div class="cur" role="group" aria-label="货币">
+      <button type="button" data-sym="¥">¥ 人民币</button>
+      <button type="button" data-sym="£">£ 英镑</button>
+      <button type="button" data-sym="$">$ 美元</button>
+      <button type="button" data-sym="€">€ 欧元</button>
+    </div>
+    <div class="sub" style="margin-top:6px">所有金额用同一种货币填。</div>
+  </div>
+
+  <div class="card">
+    <h2>② 每个月大概花多少</h2>
+    <div class="f"><label for="rent">房租<small>按月付才填；已经一次付清的填 0</small></label><input id="rent" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="food">吃饭、买菜</label><input id="food" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="transport">交通</label><input id="transport" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="subs">手机、会员订阅</label><input id="subs" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label for="other">其他：日用、社交、购物、旅行</label><input id="other" inputmode="decimal" placeholder="0"></div>
+    <div class="f"><label>每月合计</label><b id="monthly" style="text-align:right;font-variant-numeric:tabular-nums">0</b></div>
+  </div>
+
+  <div class="card">
+    <h2>③ 需要撑到什么时候（可选）</h2>
+    <div class="f"><label for="goal">毕业或下一笔钱到账的月份</label><input id="goal" type="month"></div>
+  </div>
+
+  <div class="card">
+    <h2>想知道每个月实际花了多少？</h2>
+    <div style="font-size:14px">上面的“每月花多少”是估出来的，真实数字往往会高一些。<b>留学记账看板</b>可以把学费、房租和日常开销分开记，英镑和人民币记在同一本账里，每月还会用账户余额帮你查漏记。同样不用注册，数据只存在你的浏览器里。</div>
+    <a class="cta" id="toLedger" href="https://shisonglin6.github.io/liuxue-ledger/">打开留学记账看板 →</a>
+  </div>
+
+  <div class="foot">
+    算法：还能撑的月数 =（现有总额 − 保底 − 还没付的大额）÷ 每月合计。这只是按当前估算推出来的数，汇率变化、突发开销都没算进去。<br>
+    隐私：输入的数字只存在这台设备的浏览器里（方便下次打开），不会上传。页面用 GoatCounter 统计访问次数和来源网站，不用 cookie，也不会读取你填的任何数字。<br>
+    一个在英国读书的学生做的小工具 · <a href="https://github.com/ShiSongLin6/liuxue-runway">源码</a> · <button class="reset" id="reset" type="button">清空我填的数字</button>
+  </div>
+</div>
+
+<script>
+// GoatCounter：注册后把 code 填在这里（例如 'liuxue-runway'）。留空 = 不加载任何统计。
+const GC_CODE = '';
+
+const $ = id => document.getElementById(id);
+const FIELDS = ['assets','reserve','upcoming','rent','food','transport','subs','other','goal'];
+const MONTHLY = ['rent','food','transport','subs','other'];
+const KEY = 'liuxue-runway-v1';
+let sym = '¥';
+
+const num = v => { const n = parseFloat(String(v).replace(/[,，\s]/g,'')); return isFinite(n) && n > 0 ? n : 0; };
+const fmt = n => sym + Math.round(n).toLocaleString('zh-CN');
+const ym = d => `${d.getFullYear()} 年 ${d.getMonth()+1} 月`;
+
+function load(){
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) || '{}');
+    FIELDS.forEach(f => { if (s[f] != null) $(f).value = s[f]; });
+    if (s.sym) sym = s.sym;
+  } catch(e) {}
+}
+function save(){
+  try {
+    const s = { sym };
+    FIELDS.forEach(f => s[f] = $(f).value);
+    localStorage.setItem(KEY, JSON.stringify(s));
+  } catch(e) {}
+}
+
+function render(){
+  document.querySelectorAll('.cur button').forEach(b => b.classList.toggle('on', b.dataset.sym === sym));
+  const monthly = MONTHLY.reduce((a,f) => a + num($(f).value), 0);
+  $('monthly').textContent = fmt(monthly);
+  const usable = num($('assets').value) - num($('reserve').value) - num($('upcoming').value);
+  const rM = $('rMonths'), rU = $('rUntil'), rG = $('rGoal'), rA = $('rAlert');
+  rU.textContent = ''; rG.innerHTML = ''; rA.innerHTML = '';
+
+  if (!num($('assets').value) || !monthly) {
+    rM.innerHTML = '—';
+    rU.innerHTML = '<span class="mute">填上“现在一共有多少”和每月开销，就能看到结果。</span>';
+    return;
+  }
+  if (usable <= 0) {
+    rM.innerHTML = '0<small>个月</small>';
+    rA.innerHTML = `<div class="alert">扣掉保底和还没付的大额之后，可以动用的钱是 <b class="out">${fmt(usable)}</b>。保底或待付金额要再核对一下，或者先跟家里沟通资金安排。</div>`;
+    return;
+  }
+  const months = usable / monthly;
+  rM.innerHTML = `${months >= 100 ? '99+' : months.toFixed(1)}<small>个月</small>`;
+  const end = new Date(); end.setDate(end.getDate() + Math.round(months * 30.44));
+  rU.innerHTML = `大约能撑到 <b>${ym(end)}</b>　·　可动用 ${fmt(usable)}，每月 ${fmt(monthly)}`;
+
+  const g = $('goal').value;
+  if (g) {
+    const [gy, gm] = g.split('-').map(Number);
+    const now = new Date();
+    const need = Math.max(0, (gy - now.getFullYear()) * 12 + (gm - (now.getMonth()+1)) + 1 - now.getDate()/30.44);
+    if (need > 0) {
+      const gap = need * monthly - usable;
+      if (gap > 0) {
+        const perMonth = usable / need;
+        rG.innerHTML = `撑到 ${gy} 年 ${gm} 月还差 <b class="out">${fmt(gap)}</b>：要么补这笔钱，要么把每月开销降到 <b>${fmt(perMonth)}</b> 左右（少花 ${fmt(monthly - perMonth)}）。`;
+      } else {
+        rG.innerHTML = `撑到 ${gy} 年 ${gm} 月之后还能剩 <b class="in">${fmt(-gap)}</b>。`;
+      }
+    }
+  }
+  if (months < 3) rA.innerHTML = '<div class="alert">不到 3 个月了。建议现在就把下一笔钱的来源和时间定下来。</div>';
+}
+
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => { render(); save(); }));
+document.querySelectorAll('.cur button').forEach(b => b.addEventListener('click', () => { sym = b.dataset.sym; render(); save(); }));
+$('reset').addEventListener('click', () => {
+  FIELDS.forEach(f => $(f).value = '');
+  try { localStorage.removeItem(KEY); } catch(e) {}
+  render();
+});
+$('toLedger').addEventListener('click', () => {
+  try { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path: 'click-ledger', title: '点击：打开记账看板', event: true }); } catch(e) {}
+});
+
+load(); render();
+
+if (GC_CODE) {
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://gc.zgo.at/count.js';
+  s.dataset.goatcounter = `https://${GC_CODE}.goatcounter.com/count`;
+  document.body.appendChild(s);
+}
+</script>
+</body>
+</html>
